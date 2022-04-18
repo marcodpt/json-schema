@@ -1,4 +1,4 @@
-import validation from './src/validation/index.js'
+import validator from './index.js'
 
 const path = 'JSON-Schema-Test-Suite/tests'
 
@@ -12,39 +12,101 @@ const drafts = [
 ]
 
 const files = [
-  'pattern.json',
-  'minimum.json',
-  'maximum.json',
-  'exclusiveMinimum.json',
-  'exclusiveMaximum.json',
-  'minLength.json',
-  'maxLength.json',
-  'minItems.json',
-  'maxItems.json',
+  'boolean_schema.json',
+  'format.json',
+  //'vocabulary.json',
+  'content.json',
+  'default.json',
+
+  'type.json',
   'const.json',
-  'required.json',
+  'enum.json',
   'multipleOf.json',
-  'type.json'
+  'maximum.json',
+  'exclusiveMaximum.json',
+  'minimum.json',
+  'exclusiveMinimum.json',
+  'maxLength.json',
+  'minLength.json',
+  'pattern.json',
+  'maxItems.json',
+  'minItems.json',
+  'uniqueItems.json',
+  'maxProperties.json',
+  'minProperties.json',
+  'required.json',
+  'dependentRequired.json',
+  'dependencies.json',
+
+  'prefixItems.json',
+  'additionalItems.json',
+  //'items.json',
+  'contains.json',
+  'additionalProperties.json',
+  'properties.json',
+  'patternProperties.json',
+  'if-then-else.json',
+  'allOf.json',
+  'anyOf.json',
+  'oneOf.json',
+  'not.json',
 ]
 
 const Tests = []
 const Ignore = {
   draft3: [
-    'minimum.json',
-    'maximum.json',
+    'boolean_schema.json',
+    'vocabulary.json',
+    'content.json',
     'exclusiveMinimum.json',
     'exclusiveMaximum.json',
     'const.json',
-    'required.json',
     'multipleOf.json',
-    'type.json'
+    'maxProperties.json',
+    'minProperties.json',
+    'dependentRequired.json',
+    'prefixItems.json',
+    'contains.json',
+    'allOf.json',
+    'anyOf.json',
+    'oneOf.json',
+    'not.json',
+    'if-then-else.json'
   ],
   draft4: [
-    'minimum.json',
-    'maximum.json',
+    'boolean_schema.json',
+    'vocabulary.json',
+    'content.json',
     'exclusiveMinimum.json',
     'exclusiveMaximum.json',
-    'const.json'
+    'const.json',
+    'contains.json',
+    'dependentRequired.json',
+    'prefixItems.json',
+    'if-then-else.json'
+  ],
+  draft6: [
+    'vocabulary.json',
+    'content.json',
+    'content.json',
+    'dependentRequired.json',
+    'prefixItems.json',
+    'if-then-else.json'
+  ],
+  draft7: [
+    'vocabulary.json',
+    'content.json',
+    'content.json',
+    'dependentRequired.json',
+    'prefixItems.json'
+  ],
+  'draft2019-09': [
+    'dependencies.json',
+    'prefixItems.json'
+  ],
+  'draft2020-12': [
+    'dependencies.json',
+    'additionalItems.json'
   ]
 }
 
@@ -56,13 +118,6 @@ drafts.forEach(draft => {
     }
   })
 })
-
-const validator = schema => data => 
-  Object.keys(validation).reduce((pass, keyword) => {
-    const fixed = schema[keyword]
-    const v = validation[keyword]
-    return pass && (fixed === undefined || v(fixed, data))
-  }, schema ? true : false)
 
 QUnit.config.autostart = false
 
