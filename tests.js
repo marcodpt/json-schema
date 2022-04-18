@@ -18,7 +18,13 @@ const files = [
   'exclusiveMinimum.json',
   'exclusiveMaximum.json',
   'minLength.json',
-  'maxLength.json'
+  'maxLength.json',
+  'minItems.json',
+  'maxItems.json',
+  'const.json',
+  'required.json',
+  'multipleOf.json',
+  'type.json'
 ]
 
 const Tests = []
@@ -27,13 +33,18 @@ const Ignore = {
     'minimum.json',
     'maximum.json',
     'exclusiveMinimum.json',
-    'exclusiveMaximum.json'
+    'exclusiveMaximum.json',
+    'const.json',
+    'required.json',
+    'multipleOf.json',
+    'type.json'
   ],
   draft4: [
     'minimum.json',
     'maximum.json',
     'exclusiveMinimum.json',
-    'exclusiveMaximum.json'
+    'exclusiveMaximum.json',
+    'const.json'
   ]
 }
 
