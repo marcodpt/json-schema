@@ -16,10 +16,7 @@ export default {
   /*validation*/
   type: (schema, data) => 
     (typeof schema == "string" ? [schema] : schema).reduce((pass, type) =>
-      pass || (
-        (typeof type === "boolean" || (typeof type === "object" && type)) && 
-        validator(type, data)
-      ) || (type === "any") ||
+      pass ||
       (type === "null" && data === null) ||
       (type === "boolean" && (data === true || data === false)) ||
       (type === "number" && typeof data == "number") || (
@@ -81,13 +78,11 @@ export default {
     }
     const Keys = Object.keys(data)
 
-    return Object.keys(schema).reduce(
-      (pass, key) => pass && (
-        Keys.indexOf(key) == -1 || schema[key].reduce(
-          (pass, dep) => pass && Keys.indexOf(dep) != -1
-        , true)
-      )
-    , true)
+    return Object.keys(schema).reduce((pass, key) => pass && (
+      Keys.indexOf(key) == -1 || schema[key].reduce(
+        (pass, dep) => pass && Keys.indexOf(dep) != -1
+      , true)
+    ), true)
   },
 
   /*applicator*/
@@ -97,27 +92,29 @@ export default {
       validator(item, data[i])
     )
   , true),
-  additionalItems: (schema, data, parent) => {
-    if (!(data instanceof Array) || !(parent.items instanceof Array)) {
+  items: (schema, data, parent) => {
+    if (!(data instanceof Array)) {
       return true
     }
 
-    const n = parent.items instanceof Array ? parent.items.length : 0
+    const n = parent.prefixItems != null ? parent.prefixItems.length : 0
     return data.reduce(
       (pass, item, i) => pass && (n > i || validator(schema, item))
     , true)
   },
-  items: (schema, data, parent) => {
-    const n = parent.prefixItems != null ? parent.prefixItems.length : 0
-    return !(data instanceof Array) ||
-      data.reduce((pass, item, i) => pass && (n > i || validator(
-        schema instanceof Array ?
-          (schema[i+n] == null ? true : schema[i+n]) : schema
-      , item)), true)
+  contains: (schema, data, parent) => {
+    if (!(data instanceof Array)) {
+      return true
+    }
+    const n = data.reduce(
+      (n, item, i) => n + (validator(schema, item) ? 1 : 0)
+    , 0)
+    const max = parent.maxContains
+    const min = parent.minContains
+
+    return (typeof max != "number" || n <= max) &&
+      (typeof min != "number" ? (n > 0) : (n >= min))
   },
-  contains: (schema, data) =>
-    !(data instanceof Array) ||
-    data.reduce((pass, item, i) => pass || validator(schema, item), false),
   additionalProperties: (schema, data, parent) =>
     !isObj(data) || Object.keys(data).reduce((pass, key) => pass && ((
       parent.properties != null && 
@@ -130,8 +127,7 @@ export default {
   properties: (schema, data) =>
     !isObj(data) || Object.keys(schema).reduce(
       (pass, key) => pass && (
-        data[key] === undefined ? schema[key].required !== true :
-        validator(schema[key], data[key])
+        data[key] === undefined || validator(schema[key], data[key])
       )
     , true),
   patternProperties: (schema, data) => 
@@ -144,6 +140,18 @@ export default {
       , pass)
     , true)
   ,
+  dependentSchemas: (schema, data) => {
+    if (!isObj(data)) {
+      return true
+    }
+    const Keys = Object.keys(data)
+
+    return Object.keys(schema).reduce((pass, key) => pass && (
+      Keys.indexOf(key) == -1 || validator(schema[key], data)
+    ), true)
+  },
+  propertyDependencies: (schema, data) => true,
+  propertyNames: (schema, data) => true,
   if: (schema, data, parent) => 
     validator(schema, data) ?
       validator(parent.then || true, data) :
