@@ -12,6 +12,4 @@ const isObj = X => X != null && typeof X == 'object' && !(X instanceof Array)
 
 const copy = X => JSON.parse(JSON.stringify(X))
 
-const debug = X => console.log(JSON.stringify(X, undefined, 2))
-
-export {eq, isObj, copy, debug}
+export {eq, isObj, copy}

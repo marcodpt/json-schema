@@ -1,3 +1,5 @@
+import upgrade from './upgrade.js'
+
 const resolve = (root, path) => typeof path != "string" ? {} :
   path.split('/').reduce((p, key) => {
     if (key == '#') {
@@ -9,18 +11,24 @@ const resolve = (root, path) => typeof path != "string" ? {} :
     }
   }, {})
 
-const resolver = (root, schema) => {
-  if (schema.$ref != null) {
-    const data = resolve(root, schema.$ref)
-    delete schema.$ref
-    Object.keys(data).forEach(key => {
-      if (schema[key] === undefined) {
-        schema[key] = data[key]
-      }
-    })
+export default root => {
+  const resolver = schema => {
+    if (schema == null || typeof schema != "object") {
+      return
+    }
+    if (schema.$ref != null) {
+      const data = resolve(root, schema.$ref)
+      upgrade(data)
+      delete schema.$ref
+      Object.keys(data).forEach(key => {
+        if (schema[key] === undefined) {
+          schema[key] = data[key]
+        }
+      })
 
-    resolver(root, schema)
+      resolver(schema)
+    }
   }
-}
 
-export default resolver
+  return resolver
+}

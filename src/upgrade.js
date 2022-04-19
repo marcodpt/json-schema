@@ -1,4 +1,7 @@
 export default schema => {
+  if (schema == null || typeof schema != "object") {
+    return
+  }
 
   /*Draft: 3*/
   if (schema.type != null) {

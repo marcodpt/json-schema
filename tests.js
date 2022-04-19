@@ -43,7 +43,7 @@ const files = [
 
   'prefixItems.json',
   'additionalItems.json',
-  //'items.json',
+  'items.json',
   'contains.json',
   'additionalProperties.json',
   'properties.json',
@@ -55,6 +55,8 @@ const files = [
   'anyOf.json',
   'oneOf.json',
   'not.json',
+
+  //'ref.json',
 ]
 
 const Tests = []
