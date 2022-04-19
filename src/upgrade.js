@@ -44,6 +44,11 @@ export default schema => {
     }
   }
 
+  if (schema.divisibleBy != null) {
+    schema.multipleOf = schema.divisibleBy
+    delete schema.divisibleBy
+  }
+
   /*Draft: 3,4*/
   if (typeof schema.exclusiveMinimum == "boolean") {
     if (schema.minimum != null && schema.exclusiveMinimum) {

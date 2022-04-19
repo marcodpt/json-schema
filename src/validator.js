@@ -1,11 +1,25 @@
 import upgrade from './upgrade.js'
-import keywords from './keywords.js'
+import validation from './validation.js'
+import applicator from './applicator.js'
+import resolver from './core.js'
+import {copy} from './lib.js'
 
-export default (schema, data) => typeof schema === "boolean" ? schema :
-  Object.keys(keywords).reduce((pass, keyword) => {
+export default (schema, data) => {
+  const root = copy(schema)
+
+  const validator = (schema, data) => {
+    if (typeof schema === "boolean") {
+      return schema
+    }
     upgrade(schema)
-    const s = schema[keyword]
-    const v = keywords[keyword]
+    const a = applicator(validator)
 
-    return pass && (s === undefined || v(s, data, schema))
-  }, schema ? true : false)
+    return Object.keys(validation).reduce((pass, key) => pass && (
+      schema[key] === undefined || validation[key](schema[key], data)
+    ), schema ? true : false) && Object.keys(a).reduce((pass, key) => 
+      pass && (schema[key] === undefined || a[key](schema[key], data, schema))
+    , true)
+  }
+
+  return validator(root, data)
+}

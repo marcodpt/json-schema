@@ -22,6 +22,7 @@ const files = [
   'const.json',
   'enum.json',
   'multipleOf.json',
+  'divisibleBy.json',
   'maximum.json',
   'exclusiveMaximum.json',
   'minimum.json',
@@ -48,6 +49,7 @@ const files = [
   'properties.json',
   'patternProperties.json',
   'dependentSchemas.json',
+  'propertyNames.json',
   'if-then-else.json',
   'allOf.json',
   'anyOf.json',
@@ -71,6 +73,7 @@ const Ignore = {
     'minProperties.json',
     'dependentRequired.json',
     'dependentSchemas.json',
+    'propertyNames.json',
     'prefixItems.json',
     'contains.json',
     'allOf.json',
@@ -86,18 +89,20 @@ const Ignore = {
     'exclusiveMinimum.json',
     'exclusiveMaximum.json',
     'const.json',
+    'divisibleBy.json',
     'contains.json',
     'maxContains.json',
     'minContains.json',
     'dependentRequired.json',
     'dependentSchemas.json',
+    'propertyNames.json',
     'prefixItems.json',
     'if-then-else.json'
   ],
   draft6: [
     'vocabulary.json',
     'content.json',
-    'content.json',
+    'divisibleBy.json',
     'maxContains.json',
     'minContains.json',
     'dependentRequired.json',
@@ -108,7 +113,7 @@ const Ignore = {
   draft7: [
     'vocabulary.json',
     'content.json',
-    'content.json',
+    'divisibleBy.json',
     'maxContains.json',
     'minContains.json',
     'dependentRequired.json',
@@ -116,10 +121,12 @@ const Ignore = {
     'prefixItems.json'
   ],
   'draft2019-09': [
+    'divisibleBy.json',
     'dependencies.json',
     'prefixItems.json'
   ],
   'draft2020-12': [
+    'divisibleBy.json',
     'dependencies.json',
     'additionalItems.json'
   ]
