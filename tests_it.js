@@ -85,7 +85,7 @@ export default v => {
             default: 0
           },
           name: {
-            type: "string"
+            type: "string",
             format: "email"
           }
         },

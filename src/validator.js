@@ -6,7 +6,7 @@ import core from './core.js'
 import {copy, isObj} from './lib.js'
 
 export default (schema, data) => {
-  const root = copy(schema || null)
+  const root = copy(schema === undefined ? null : schema)
   const resolver = core(root)
 
   if (typeof data == "function") {
