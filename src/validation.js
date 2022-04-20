@@ -1,6 +1,6 @@
 import {isObj, eq} from './lib.js'
 
-export default {
+const keywords = {
   type: (schema, data) => 
     (typeof schema == "string" ? [schema] : schema).reduce((pass, type) =>
       pass ||
@@ -72,3 +72,9 @@ export default {
     ), true)
   }
 }
+
+export default schema => data => Object.keys(keywords)
+  .reduce((err, key) =>
+    err || schema[key] === undefined ? err :
+    keywords[key](schema[key], data) ? '' : key
+  , '')

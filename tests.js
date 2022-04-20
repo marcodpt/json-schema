@@ -1,4 +1,5 @@
 import validator from './index.js'
+import tests_it from './tests_it.js'
 
 const path = 'JSON-Schema-Test-Suite/tests'
 
@@ -155,6 +156,7 @@ Promise.all(Tests.map(test => fetch(test)
   .then(response => {
     QUnit.start()
     console.log(response)
+    tests_it(validator)
     response.forEach(({draft, data}) => {
       data.forEach(({schema, description, tests}) => {
         const v = validator(schema)
