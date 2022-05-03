@@ -1,5 +1,5 @@
 import validator from './src/validator.js'
 
-export default (schema, data) => data === undefined ?
-  data => validator(schema, data) :
-  validator(schema, data)
+export default (schema, data, onError) => data === undefined ?
+  (data, onError) => validator(schema, data, onError) :
+  validator(schema, data, onError)
